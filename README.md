@@ -67,4 +67,4 @@ npm test
 npm run preview
 ```
 
-The preview tool serves static files on localhost; it does not calculate molecular properties. The tests cover formulas, masses, editing, parsing, complements, drafts, layout, terminal groups, and catalog extension. GitHub Actions runs the same tests on pushes and pull requests. `tools/token-usage.cjs` is an optional developer utility; its generated reports are excluded from the repository.
+The preview tool serves static files on localhost; it does not calculate molecular properties. The tests cover formulas, masses, editing, parsing, complements, drafts, layout, terminal groups, and catalog extension. GitHub Actions runs the same tests on pushes and pull requests.

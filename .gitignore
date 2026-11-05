@@ -4,6 +4,5 @@ coverage/
 .env.*
 !.env.example
 *.log
-reports/
 .DS_Store
 Thumbs.db
