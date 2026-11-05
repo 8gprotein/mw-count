@@ -1,0 +1,7 @@
+{
+  "name": "mw-count",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline oligonucleotide sequence designer and neutral mass calculator",
+  "scripts": { "test": "node --test tests/*.test.cjs", "preview": "node tools/preview.cjs", "usage": "node tools/token-usage.cjs" }
+}

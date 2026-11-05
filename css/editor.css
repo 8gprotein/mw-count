@@ -1,0 +1,41 @@
+/* designed/corrected by YZ, implemented by openAI */
+/* Compact editor layout; fixed 20-nucleotide rows fitted to the live canvas width. */
+.topbar{height:64px;padding:0 24px}.brand-mark{width:38px;height:38px}.brand strong{font-size:20px}.brand div>span{font-size:12px}
+main{max-width:none;margin:12px auto;padding:0 20px;gap:10px}.section-head{padding:12px 16px}.input-panel textarea{min-height:54px;height:54px;width:calc(100% - 32px);margin:0 16px;padding:8px 12px;font-size:16px;line-height:1.5}.input-meta{padding:6px 16px 9px;gap:8px}.error{margin:0 16px 8px;padding:6px 10px}
+.design-grid{grid-template-columns:190px minmax(0,1fr);gap:12px;align-items:start}.library .section-head{padding:12px}.library .eyebrow{display:none}.chemistry-tabs{padding:0 12px;gap:6px;max-height:140px;overflow-y:auto}.chemistry-tabs button{padding:7px 4px}.library-items{padding:12px;gap:12px}.library-items .nucleotide{width:48px;height:48px;font-size:18px}.library #chemistry-description{padding:8px 12px 0;min-height:0}.library .divider{margin:4px 12px 12px}.library h3{padding:0 12px;margin-bottom:10px}.link-library{padding:0 12px 14px;gap:8px}.link-choice{padding:7px 10px}.link-choice .link-dot{width:24px;height:24px}
+.editor-panel{height:clamp(320px,calc(100dvh - 300px),720px);min-height:320px}.workspace-meta{padding:0 16px 8px;flex-direction:row;font-size:12px}.workspace-footer{padding:8px 16px;font-size:12px}.workspace-footer button{padding:7px 12px}.selection-editor{padding:8px 14px;gap:7px}.selection-editor select,.selection-editor button{padding:5px 8px;font-size:13px}
+.workspace{display:block;flex:1 1 auto;min-height:100px;overflow-x:hidden;overflow-y:auto;padding:8px 12px;scrollbar-gutter:stable;background-size:16px 16px}.strand-stack{display:flex;flex-direction:column;gap:9px;min-width:0}.strand-line{padding:0 0 16px;min-width:0}.row-meta{font:12px/18px Consolas,monospace;color:#62758b;margin-bottom:12px}.wrapped-strand{display:flex;align-items:center;justify-content:flex-start;min-width:0;height:58px;padding:0;margin:0;gap:0;white-space:nowrap}
+.wrapped-strand>.nucleotide,.compact .wrapped-strand>.nucleotide{width:44px;height:44px;flex:0 0 44px;font-size:18px;border-width:2px}.wrapped-strand>.nucleotide:hover:not(:disabled){transform:none}.wrapped-strand .nucleotide small{font-size:14px;bottom:-22px;font-weight:500}
+.wrapped-strand>.insert-slot,.wrapped-strand>.bond{position:relative;display:block;flex:0 0 6px;width:6px;height:44px;border:0;padding:0;background:transparent;outline:0;color:transparent;pointer-events:none;border-radius:0}
+.wrapped-strand>.insert-slot::after,.wrapped-strand>.bond::after{content:"";position:absolute;top:21px;left:0;width:6px;height:2px;background:#8fa2b8}
+.wrapped-strand>.insert-slot::before{content:"↓";position:absolute;left:-8px;top:-24px;width:22px;height:25px;color:#4e78af;font:22px/25px "Segoe UI",sans-serif;text-align:center;opacity:0;pointer-events:none}
+.dragging-nucleotide .wrapped-strand>.insert-slot,.dragging-link .wrapped-strand>.insert-slot{pointer-events:auto}
+.dragging-nucleotide .wrapped-strand>.insert-slot::before,.dragging-link .wrapped-strand>.insert-slot::before{opacity:1;pointer-events:auto}
+.dragging-link .wrapped-strand>.insert-slot::before{content:"+";color:#97681d}
+.wrapped-strand>.insert-slot.drop-active{width:6px;background:#e0edff;outline:2px solid #6296d9}
+.wrapped-strand>.insert-slot.drop-active::before{color:#103f92;background:#d8e8ff;border-radius:4px}
+.wrapped-strand>.link-wrapper{height:44px;flex:0 0 24px;width:24px}.wrapped-strand .connector{height:44px;min-width:24px;width:24px;padding:0}.wrapped-strand .connector .link-dot{width:24px;height:24px}.wrapped-strand .connector::before,.wrapped-strand .connector::after{display:none}
+.wrapped-strand .remove-link{bottom:-20px;width:19px;height:19px;font-size:15px;line-height:16px}
+.wrapped-strand>.terminus{height:44px;font-size:20px;flex-shrink:0}.wrapped-strand>.terminus small{top:-18px;font-size:16px}.wrapped-strand>.terminus::before,.wrapped-strand>.terminus::after{display:none}.wrapped-strand>.open-end{min-width:26px;padding:0 3px}
+.continuation{font:18px/1 Consolas,monospace;color:#52759b;align-self:center;flex-shrink:0}.incoming{width:26px;text-align:center}.outgoing{padding-left:7px;font-size:13px;margin-left:4px}.empty-workspace{min-width:0;justify-content:center;padding:20px 0}.empty-workspace p{font-size:13px}
+#complement-content{display:flex;flex-direction:column;flex:1 1 45%;min-height:130px;max-height:50%;overflow:hidden}.strand-heading{padding:7px 16px;font-size:13px}.compact{min-height:80px;margin:0}#complement-text{display:none}.drawing-status{padding:7px 12px;font-size:13px;flex-shrink:0}
+.results{width:100%;max-width:100%;display:flex;align-items:center;gap:16px;padding:10px 16px}.mass-lines{flex:1;min-width:0;display:grid;gap:7px}.mass-line{display:flex;align-items:center;gap:14px;min-width:0}.mass-line h3{font-size:12px;min-width:78px;margin:0;color:#667a91;font-weight:500}.mass-line>div{flex:1;min-width:0}.mass-values{margin:0;display:flex;align-items:center;gap:30px;flex-wrap:wrap}.mass-item{display:flex;gap:12px;align-items:baseline;min-width:0}.mass-item dt{font-size:13px;color:#526980}.mass-item dd{font:18px/1.4 Consolas,monospace;margin:0;color:#153e67}.table-unit{font-size:12px}.precision-control{display:flex;align-items:center;gap:8px;font-size:12px;color:#526980;flex-shrink:0}.precision-control select{padding:5px 8px}.invalid-property{padding:0;background:none;font-size:17px}.calculation-notes{font-size:12px}.page-footer{display:flex;max-width:none;justify-content:flex-end;padding:0 20px 12px;margin:0;letter-spacing:0}
+@media(max-width:1000px){.mass-values{gap:6px 20px}.mass-item{gap:7px}.mass-item dd{font-size:16px}.design-grid{grid-template-columns:168px minmax(0,1fr)}.mass-line h3{min-width:68px}.library-items{gap:9px}.workspace-meta #picked-label{display:none}}
+@media(max-width:720px){main{padding:0 10px}.topbar{padding:0 12px}.brand div>span{display:none}.design-grid{grid-template-columns:1fr}.library-items{display:flex;padding:8px 12px}.library .section-head,.library #chemistry-description,.library .divider,.library h3{display:none}.chemistry-tabs{grid-template-columns:repeat(4,minmax(0,1fr));padding:8px 12px 0}.link-library{display:flex;padding:0 12px 8px}.library{display:grid;grid-template-columns:1fr}.editor-panel{height:420px}.results{padding:8px 12px;gap:8px;flex-wrap:wrap}.mass-line{align-items:flex-start;gap:7px}.mass-item{flex-wrap:wrap;gap:2px 8px}.mass-values{gap:4px 14px}.precision-control{margin-left:auto}.input-meta{flex-direction:row;flex-wrap:wrap}}
+
+/* Shared row scale: center a single row, left-align every row of a multiline strand. */
+.row-viewport{position:relative;margin:0 auto;flex-shrink:0}
+.wrapped-strand{position:absolute;left:0;top:22px;width:max-content;min-width:max-content;transform-origin:top left}
+.row-meta{text-align:center;margin-bottom:0}
+.strand-stack.multiline .row-viewport{margin-left:0;margin-right:auto}
+.strand-stack.multiline .row-meta{text-align:left}
+.strand-line{padding-bottom:4px}
+.wrapped-strand .five-prime-select{font:600 18px/1.2 Consolas,monospace;width:76px;min-width:76px;height:34px;padding:3px 4px;border:1px solid #a6b9ce;border-radius:5px;background:#fff;color:#315171;cursor:pointer;flex-shrink:0}
+.terminal-oxygen{font-size:20px;margin-left:2px}
+
+/* Native popup on click, with only the compact chemical label visible at rest. */
+.wrapped-strand .five-prime-select{position:absolute;inset:0;width:100%;min-width:0;height:100%;padding:0;margin:0;opacity:0;cursor:pointer;z-index:1}
+.terminus:has(.five-prime-select):hover .terminal-text{color:#245cc5;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:4px}
+.terminus:has(.five-prime-select:focus-visible){outline:2px solid #6296d9;outline-offset:3px;border-radius:3px}
+
+@media(max-width:480px){.brand strong{font-size:16px}.brand{gap:9px}.brand-mark{flex-shrink:0}.page-footer{padding-right:10px}}

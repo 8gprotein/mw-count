@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- designed/corrected by YZ, implemented by openAI -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Local oligonucleotide editor and neutral molecular mass calculator">
+  <title>Oligonucleotide Mass Calculation</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand"><span class="brand-mark">OM</span><div><strong>Oligonucleotide Mass Calculation</strong></div></div></header>
+  <main>
+    <section class="panel input-panel" aria-labelledby="input-title">
+      <div class="section-head"><h1 id="input-title">Sequence input <span>5′ → 3′</span></h1><div class="actions"><button id="example">Load example</button><button id="clear">Clear</button></div></div>
+      <label class="sr-only" for="sequence-input">Enter a sequence</label>
+      <textarea id="sequence-input" spellcheck="false" autocomplete="off" placeholder="dA-dC-(s)-mG-fU"></textarea>
+      <div class="input-meta"><span><code>-</code> PO · <code>-(s)-</code> PS · d DNA / r RNA / m 2′-OMe / f 2′-F</span><span id="input-status" role="status">No sequence</span></div>
+      <p id="input-error" class="error" role="alert" hidden></p>
+    </section>
+    <section class="panel results" aria-label="Molecular properties">
+      <div class="mass-lines"><div class="mass-line"><h3>Primary</h3><div id="primary-properties" aria-live="polite"></div></div><div id="complement-property-card" class="mass-line" hidden><h3>Complement</h3><div id="complement-properties" aria-live="polite"></div></div></div>
+      <label class="precision-control">Decimals <select id="precision"><option value="2">2</option><option value="4" selected>4</option><option value="6">6</option></select></label>
+    </section>
+    <div class="design-grid">
+      <aside class="panel library" aria-labelledby="library-title">
+        <div class="section-head"><h2 id="library-title">Nucleotide library</h2><span class="eyebrow">LIBRARY</span></div>
+        <div id="chemistry-tabs" class="chemistry-tabs" role="group" aria-label="Nucleotide chemistry"></div>
+        <p id="chemistry-description" class="muted"></p>
+        <div id="library-items" class="library-items"></div>
+        <div class="divider"></div><h3>Linkages</h3>
+        <div class="link-library"><button class="link-choice" data-link="PO" draggable="true" title="Drag onto a linkage to replace it with PO"><span class="link-dot po"></span>PO</button><button class="link-choice" data-link="PS" draggable="true" title="Drag onto a linkage to replace it with PS"><span class="link-dot ps"></span>PS</button></div>
+      </aside>
+      <section class="panel editor-panel" aria-labelledby="editor-title">
+        <div class="section-head"><h2 id="editor-title">Sequence workspace</h2><div class="actions"><button id="clear-workspace" class="icon-button" title="Clear workspace" aria-label="Clear workspace"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 10v7M14 10v7"/></svg></button><button id="undo" title="Undo" disabled>↶ Undo</button><button id="redo" title="Redo" disabled>↷ Redo</button></div></div>
+        <div class="workspace-meta"><span id="sequence-count">0 nucleotides · 0 linkages</span><span id="picked-label">Selected dA · Drag to insert</span></div>
+        <div id="primary-workspace" class="workspace" aria-label="Primary strand editor"></div>
+        <p id="drawing-status" class="drawing-status" role="status" hidden></p>
+        <div id="complement-content" hidden><div class="strand-heading">Reverse complement <span>3′ → 5′</span></div><div id="complement-workspace" class="workspace compact"></div><p id="complement-text" class="sequence-text"></p></div>
+        <div id="selection-editor" class="selection-editor" hidden>
+          <strong id="selection-title"></strong>
+          <label>Chemistry <select id="edit-chemistry"></select></label>
+          <label>Base <select id="edit-base"></select></label>
+          <button id="move-left">← Move left</button><button id="move-right">Move right →</button><button id="delete-selected" class="danger">Delete</button>
+        </div>
+        <div class="workspace-footer"><span>Click to edit · Drag to insert or reorder<br><b class="legend-dot po"></b> PO <b class="legend-dot ps"></b> PS</span><button id="toggle-complement" class="primary" aria-pressed="false" disabled>Reverse complement</button></div>
+      </section>
+    </div>
+    <details class="calculation-notes"><summary>Calculation & editing notes</summary><div>
+      <p>The workspace 5′ selector offers H (5′-OH) or DMT (5′-O-DMT). The 3′ terminus remains OH. DMT changes the primary strand mass; the generated complement has free OH termini. The 2′ position depends on sugar chemistry. Empty strands are not molecules. Calculations exclude hydrates, free ions, salts and mass-spectrometry adducts.</p>
+      <p>Insert left of a linkage to add PO on the new nucleotide's left; insert right to add PO on its right. Deleting a nucleotide removes both adjacent linkages and reconnects new neighbors with PO. Moving means deleting, then inserting. Strands run 5′ → 3′.</p>
+      <p>Use prefixed tokens such as dA, rU, mC and fG, joined by - or -(s)-. Bare sequences such as ACGT are not inferred. Recognized incomplete drawings, such as dA-(s)-, remain editable. Open ends and adjacent linkages are marked red; molecular properties show Invalid until the strand is complete. Unrecognized text cannot be drawn.</p>
+      <p>Average masses use fixed conventional atomic weights; monoisotopic masses use NIST isotope masses. Decimal places are a display setting, not experimental precision. Full modified-sequence calibration against professional software is pending.</p>
+      <p>References: <a href="https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl" target="_blank" rel="noreferrer">NIST atomic weights & isotopes</a> · <a href="https://pubchem.ncbi.nlm.nih.gov/compound/Deoxyadenosine" target="_blank" rel="noreferrer">PubChem deoxyadenosine</a></p>
+    </div></details>
+  </main>
+  <footer class="page-footer"><span class="local-badge"><i></i> Local calculations · V1</span></footer>
+  <script src="js/data/massData.js" defer></script>
+  <script src="js/data/chemistryCatalog.js" defer></script>
+  <script src="js/data/linkageData.js" defer></script>
+  <script src="js/data/chemistryData.js" defer></script>
+  <script src="js/core/sequenceModel.js" defer></script>
+  <script src="js/core/sequenceParser.js" defer></script>
+  <script src="js/core/sequenceSerializer.js" defer></script>
+  <script src="js/core/massCalculator.js" defer></script>
+  <script src="js/core/complement.js" defer></script>
+  <script src="js/core/sequenceBuilder.js" defer></script>
+  <script src="js/ui/appState.js" defer></script>
+  <script src="js/ui/sequenceLayout.js" defer></script>
+  <script src="js/ui/graphicalEditor.js" defer></script>
+  <script src="js/ui/dragDrop.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>
